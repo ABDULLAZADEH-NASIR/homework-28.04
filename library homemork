@@ -1,0 +1,112 @@
+1. Sinifde yazdigimiz kitabxana proyektini yazin, findBook metodunu da elave edin.(Mellim uzurlu sayin 
+gele bilmedim deye helede INtelij de mende problem var push edende bir birine qarwir oxunulasi olmur)
+
+
+
+import java.util.Objects;
+import java.util.Scanner;
+
+public class Main{
+    
+    public static book[] Shelf=new book[5];
+
+
+    public static void main(String[] args) {
+
+        while (true) {
+            System.out.println("Xow gelmisiniz! ");
+            System.out.println("Menudan istediyiniz emeliyyati secin: ");
+            System.out.println("1. Kitablarin siyahisina baxin");
+            System.out.println("2. Kitab elave edin");
+            System.out.println("3. Kitab axtarin");
+
+            Scanner scanner = new Scanner(System.in);
+            int select = scanner.nextInt();
+
+            switch (select) {
+                case 1:
+                    showBooks();
+                    break;
+                case 2:
+                    addBook();
+                    break;
+                case 3:
+                    findBook();
+                    break;
+                default:{
+                    System.out.println("Duzgun emeliyyat nomresini secin: ");
+                }
+            }
+        }
+    }
+    public static void showBooks(){
+        for (book b:Shelf){
+              if(Objects.nonNull(b)) {
+                  System.out.println("Kitabin adi: "+b.name+" Kitabin sayi: "+b.count+" Kitabin qiymeti: "+b.price);
+              }
+        }
+    }
+
+    public static void addBook(){
+        Scanner scanner=new Scanner(System.in);
+        System.out.println("Elave edeceyiniz kitabin adini daxil edin:");
+        String yeniKitab=scanner.next();
+        System.out.println("Elave etdiyiniz kitabin qiymetini daxil edin:");
+        int qiymet=scanner.nextInt();
+        System.out.println("Elave etmek istediyiniz kitabin sayini daxil edin:");
+        int say=scanner.nextInt();
+
+        book yeni=new book(yeniKitab,qiymet,say);
+
+        boolean full=true;
+        for(int i=0;i<Shelf.length;i++){
+            book y=Shelf[i];
+            if(y==null){
+                Shelf[i]=yeni;
+                full=false;
+                break;
+            }
+        }
+        if(full) {
+            book[] newShelf = new book[Shelf.length * 2];
+            for (int i = 0; i < Shelf.length; i++) {
+                newShelf[i]=Shelf[i];
+            }
+            int indexToAdd=Shelf.length;
+            Shelf=newShelf;
+            Shelf[indexToAdd]=yeni;
+        }
+
+        System.out.println("Kitabiniz elave edildi.Yeni kitab elave etmek isteyirsiniz?: He/Yox");
+        String davamEtmek=scanner.next();
+        if(davamEtmek.equalsIgnoreCase("he")){
+            addBook();
+        }
+    }
+    public static void findBook(){
+        Scanner scanner=new Scanner(System.in);
+        System.out.println("Axtardiginiz kitabin adini yazin:");
+        String find=scanner.next();
+
+        for (int i=0;i<Shelf.length;i++){
+               book y=Shelf[i];
+            if(find.equalsIgnoreCase(y.name)){
+                System.out.println("Axtardiginiz kitab Kitabxanamizda movcuddur:");
+                break;
+            }
+            else {
+                System.out.println("Axtradiginiz kitab Kitabxanamizda movcud deyil:");
+            }
+        }
+    }
+}
+class book {
+    public book(String name,int price,int count){
+        this.name=name;
+        this.price=price;
+        this.count=count;
+    }
+    public String name;
+    public int count;
+    public int price;
+}
