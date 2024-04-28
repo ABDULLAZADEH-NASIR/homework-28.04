@@ -1,0 +1,116 @@
+2. Kicik websayt proqrami yazin,  User classiniz olmalidi daxilinde username, password fieldleri olmalidir(Elave ne qeder isteseniz field elave edebilersiniz). Proqram acilanda asagidaki menu cixmalidir:
+
+1. Login olun
+2. Registrasiyadan kecin
+
+eger user logini secse, ondan username ve parol alaraq, eger bu username ve parolda olan user varsa listinizde , ekrana xosh gelmisiniz yazib proqrami sonlandirin. 
+
+eger user reqistrasiyadan kecin secse, userden  melumatlari (username, parol, ve diger user classindaki fieldleri) alib, yaratdiginiz user obyektini liste elave edin. Daha sonra useri yeniden menuya qaytarin.
+
+(Mellim uzurlu sayin gele bilmedim deye duzlede bilmedim menim helede Intelijde problem var deye bele atdim)
+
+
+import java.util.Objects;
+import java.util.Scanner;
+
+public class Main{
+   public static User [] website =new  User[15];
+
+    public static void main(String[] args) {
+        while (true) {
+
+            System.out.println("1. Login:");
+            System.out.println("2. Registrasiyadan kecin:");
+            Scanner scanner = new Scanner(System.in);
+            int answer = scanner.nextInt();
+
+            switch (answer) {
+                case 1:
+                    Login();
+                    break;
+                case 2:
+                    RegistirasyadanKecmek();
+                    break;
+                default: {
+                    System.out.println("Emeliyyati duzgun secin ");
+                }
+            }
+        }
+    }
+    public static void Login() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Username daxil edin:");
+        String guestName = scanner.next();
+        System.out.println("Password daxil edin:");
+        String guestPassword = scanner.next();
+
+        User guest=new User(guestName,guestPassword);
+        boolean userVarmi=false;
+        for(int i=0;i<website.length;i++) {
+            User w=website[i];
+
+            if(w != null) {
+                if (guestName.equals(w.userName) && guestPassword.equals(w.password)) {
+                    userVarmi=true;
+                    break;
+                }
+            }
+        }
+        if (userVarmi){
+            System.out.println("Xow gelmisiz! ");
+        }else {
+            System.out.println("Logininizi daxil edin. Eyer yoxdursa Registrasiyadan kecin: ");
+        }
+
+    }
+    public static void RegistirasyadanKecmek(){
+        Scanner scanner=new Scanner(System.in);
+        System.out.println("Username daxil edin:");
+        String username=scanner.next();
+        System.out.println("Password daxil edin:");
+        String password=scanner.next();
+        System.out.println("Genderinizi daxil edin");
+        String gender=scanner.next();
+        System.out.println("Yasinizi daxil edin:");
+        int yash=scanner.nextInt();
+
+        User newUser=new User(username,password,gender,yash);
+        boolean limitdolubmu=true;
+        for(int i=0;i<website.length;i++){
+            if(website[i] ==null){
+                website[i]=newUser;
+                limitdolubmu=false;
+                System.out.println("Siz registirasiyadan ugurla kecdiniz ");
+                break;
+            }
+        }
+        if(limitdolubmu){
+            User [] newWeb=new User[website.length*2];
+            for (int i=0;i<website.length;i++){
+                newWeb[i]=website[i];
+            }
+            int toAdd=website.length;
+            website=newWeb;
+            website[toAdd]=newUser;
+            System.out.println("Siz registirasiyadan ugurla kecdiniz ");
+        }
+
+    }
+}
+class User{
+    public User(String userName,String password,String gender,int yash){
+        this.userName=userName;
+        this.password=password;
+        this.gender=gender;
+        this.age=yash;
+    }
+    public User(String userName,String password){
+        this.userName=userName;
+        this.password=password;
+
+    }
+    String userName;
+    String password;
+    int age;
+    String gender;
+}
